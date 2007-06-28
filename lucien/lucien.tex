@@ -1,0 +1,229 @@
+\magnification\magstep1
+\nopagenumbers
+
+
+%%%%%%%%%%%Blackboardbold 
+\font\gbbb=msbm10 scaled \magstep1
+\font\bbbf=msbm10 
+\font\sbbb=msbm6 
+\font\ssbbb=msbm5 
+\textfont6=\bbbf
+\scriptfont6=\sbbb 
+\scriptscriptfont6=\ssbbb 
+\def\bbb{\fam6}
+\def\mP{{\bbb P}} 
+\def\mA{{\bbb A}} 
+\def\mQ{{\bbb Q}}
+\def\mN{{\bbb N}}
+\def\mB{{\bbb B}} 
+\def\mR{{\bbb R}}
+\def\mZ{{\bbb Z}}
+
+%%%%Gothic
+\font\ggothic=eufm10 scaled \magstep1
+\font\gothicf=eufm10
+\font\sgothic=eufm7
+\font\ssgothic=eufm5
+\textfont5=\gothicf
+\scriptfont5=\sgothic
+\scriptscriptfont5=\ssgothic
+\def\gothic{\fam5}
+
+
+\font\Kopfont=cmbx12
+\def\mapright#1{\smash{\mathop{\longrightarrow}\limits^{#1}}}
+\def\mapdown#1{\Big\downarrow\rlap{$\vcenter{\hbox{$\scriptstyle#1$}}$}}
+\def\downmap#1{\downarrow\rlap{$\vcenter{\hbox{$\scriptstyle#1$}}$}}
+\def\mapup#1{\Big\uparrow\rlap{$\vcenter{\hbox{$\scriptstyle#1$}}$}}
+\def\longlongrightarrow{\relbar \joinrel \longrightarrow}
+\def\cC{{\cal C}}
+\def\cD{{\cal D}}
+\def\gp{{\gothic p}}
+\def\gq{{\gothic q}}
+\def\gm{{\gothic m}}
+\def\Spec{\mathop{\rm Spec}}
+\def\Proj{\mathop{\rm Proj}}
+\def\cO{{\cal O}}
+
+
+
+\bigskip\noindent
+Dear Lucien,
+
+\medskip\noindent
+Here is a completely trivial argument for comparing heights in your sequence of points. Unfortunately it doesn't quite work so feel free to not look at this email.
+
+\medskip\noindent
+Assume $a,b,c$, $a+b=c$ are all positive and pairwise coprime. We are only
+going to look at points over $\mQ$ and we are going to ignore the prime $2$
+and we are going to assume every prime dividing $abc$ divides it to a power
+which is not a pure $2$-power.
+
+\medskip\noindent
+The elliptic curve is the Frey curve $y^2 = x(x-a)(x+b)$ and the map
+$\phi$ is given by
+$$
+\phi(x) = { (x^2+ab)^2 \over 4x(x-a)(x+b) }
+$$
+as we discussed previously.
+
+\medskip\noindent
+So I checked your lemma. It says something like this: Suppose that $v$ is
+a valuation such that $v(a) = 2^s m$ where m is odd. Then what happens is
+that if you start with an $x$ with the property $0 < v(x) < v(a)$, and the
+image of $v(x)$ in $Z/mZ$ is NONZERO then for every $k \in \mN$ you have
+$0 < v(\phi^k(x)) < v(a)$. Also the power of the uniformizer at $v$ that
+divides both
+$$
+(x^2+ab)^2
+$$
+and
+$$
+4*x*(x-a)*(x+b)
+$$
+is $2v(x)$. Hence we make the following definition.
+
+\medskip\noindent
+Definition. For a point $x \in \mP^1(\mQ)$ we define
+$$
+gain(x) = \prod_{p\ {\rm prime}} p^{e_p(x)}
+$$
+where $e_p(x)$ is defined as follows
+\item{(1)} If $p$ is $2$ or does not divide $abc$ we set $e_p(x)=0$.
+\item{(2)} If $p$ divides $a$ such that $v_p(a)$ is not a power of $2$
+and we have $0 < v_p(x) < v_p(a)$ and $v_p(x)$ is not zero modulo the
+maximal odd divisor of $v_p(a)$ then we set $e_p(x) = 2v_p(x)$.
+\item{(3)}  If $p$ divides $b$ such that $v_p(b)$ is not a power of $2$
+and we have $0 < v_p(x) < v_p(b)$ and $v_p(x)$ is not zero modulo the
+maximal odd divisor of $v_p(b)$ then we set $e_p(x) = 2v_p(x)$.
+\item{(4)}  If $p$ divides $c=a+b$ such that $v_p(c)$ is not a power of $2$
+and we have $0 < v_p(x-a) < v_p(c)$ and $v_p(x-a)$ is not zero modulo the
+maximal odd divisor of $v_p(c)$ then we set $e_p(x) = 2v_p(x-a)$.
+
+
+\medskip\noindent
+Remark. The computation above means that the average of the valuations you
+can divide out  is
+$$
+{ 2 \over \# (\mZ/m\mZ)^\ast } \left( \sum_{0<t<m, t\ {\rm prime\ to}\ m}  2^s t \right)
+$$
+which is about $2^s m = v(a)$.
+ 
+
+\medskip\noindent
+So if I think of your dynamical system as the map
+$$
+(X_0, X_1)
+\mapsto
+\Phi(X_0,X_1) := (4X_0X_1(X_1-aX_0)(X_1+bX_0), (X_1^2+abX_0^2)^2 ) 
+$$
+then we can, I think, using the Tate method starting with the function
+$$
+(X_0,X_1) \mapsto NH(X_0,X_1) = \max\{|X_0|,|X_1|\},
+$$
+find a ``local height function''
+$$
+H_\mR : \mR^2 \longrightarrow \mR_{\geq 0}
+$$
+with the following properties:
+\item{(a)} $H_\mR$ is continuous,
+\item{(b)} we have $H_\mR(tX_0,tX_1) = |t| H_\mR(X_0, X_1),$
+\item{(c)} we have $H_\mR(\Phi(X_0,X_1)) = 4H_\mR(X_0,X_1)$ and
+\item{(d)} we have that $H_\mR(X_0,X_1)=0$ implies $(X_0,X_1)=(0,0)$.
+
+\noindent
+I think the fact that the usual limit
+$$
+H_\mR(X_0,X_1) := \lim NH(\Phi^k(X_0,X_1))^{4^{-k}}
+$$
+defines a function $H_\mR$ satisfying (a), (b), (c) is easy. A trivial
+computation shows $H_\mR$ is nonzero in every torsion point! Hence (d)
+holds since oterwise (by (c) and the structure of $\Phi$) the set of
+points where $H_\mR$ is zero would be dense and $H_\mR$ would be zero by
+continuity. Then we can use $H_\mR$ to define a height of a point 
+$(X_0,X_1)$ in $\mZ^2$ as
+$$
+h(X_0, X_1) = \log( H_\mR(X_0, X_1) ) - \log( \gcd(X_0,X_1) ).
+$$
+This works, i.e.\ gives a height function, since by continuity and
+property (d) of $H_\mR$ there is going to be some $\epsilon > 0$ such
+that
+$$
+H_\mR(X_0,X_1) > \epsilon \log(\max{|X_0|, |X_1|}) = \epsilon NH(X_0,X_1).
+$$
+
+\medskip\noindent
+With these definitions you get the trivial estimate
+$$
+h( \Phi(X_0, X_1) ) <= 4h(X_0,X_1)  -  \log( gain(X_1/X_1) ).
+$$
+The reason this works is that $gain(X_1/X_0)$ will divide the gcd of
+the coordinates of $\Phi(X_0,X_1)$ for sure.
+
+\medskip\noindent
+So this would mean that those $x$ in $\mQ$, written $m/n$ in lowest terms,
+would be preperiodic for example if
+$$
+4 \log(H_\mR(n,m)) = 4 h(n,m)  < log(gain(m/n))
+$$
+
+\medskip\noindent
+Here is how I am going to make vectors $(n,m)$ of high
+gain. I choose a sequence of exponents $\{e_p\}_p$ and vectors
+$$
+\xi_p \in (\mZ/p^{e_p}\mZ)^2
+$$
+with the following properties
+\item{(1)} $e_p \geq 0$, and if $e_p > 0$ then $p$ is odd
+and $p$ divides $abc$,
+\item{(2)} if $e_p > 0$ and $v_p(a)>0$ then $e_p$ is not zero modulo
+the maximal odd divisor of $v_p(a)$, and $\xi_p = (1,0) \bmod p^{e_p}$,
+\item{(3)} if $e_p > 0$ and $v_p(b)>0$ then $e_p$ is not zero modulo
+the maximal odd divisor of $v_p(b)$, and $\xi_p = (1,0) \bmod p^{e_p}$,
+\item{(2)} if $e_p > 0$ and $v_p(c)>0$ then $e_p$ is not zero modulo
+the maximal odd divisor of $v_p(c)$, and $\xi_p = (1,a) \bmod p^{e_p}$.
+
+\noindent
+Then I look at the sublattice $\Lambda \subset \mZ^2$ defined by
+as the kernel of the map
+$$
+\mZ^2 \longrightarrow \bigoplus (\mZ/e_p\mZ)^2/\langle \xi_p \rangle
+$$
+Note that the index $I$ of $\Lambda$ in $\mZ^2$ is clearly
+$I = \prod p^{e_p}$. Anyway, the idea is to choose a suitable sequence
+of $e_p$ and then find a small vector in $\Lambda$. Such a vector will
+``typically'' determine a point whose $gain$ is the square of the quantity
+$I = \prod p^{e_p}$.
+
+\medskip\noindent
+OK, but now I still have to actually compute $H_\mR$! This is problematic
+because $H_\mR$ depends on $a,b,c$. But actually, since I am going to apply
+Minkowsky to find suitable vectors I really have to just compute
+the volume of the unit ball:
+$$
+vol := volume(\{(X_0,X_1) \in \mR^2 \mid H_\mR(X_0,X_1) \leq 1\})
+$$
+Up to a constant this volume is computed by the integral
+$$
+\int_{\theta \in [0,2\pi]} H_\mR(\cos(\theta),\sin(\theta))^{-2} {\rm d}\theta.
+$$
+
+\medskip\noindent
+The best, I think, you can hope for as a bound for this integral is an
+estimate of the form
+$$
+vol \geq constant * (ab)^{-1}.
+$$
+Actually computations suggest that the constant is $1/5376.50...$.
+This would mean that you can get nonzero elements $\lambda \in \Lambda$
+with
+$$
+H_\mR(\lambda) \leq constant * \sqrt(I * ab^{1.0001}) 
+$$
+So in the end we'll need something like
+$$
+4 \log(I^{1/2} (ab)^{1/2}) < log(I^2)
+$$
+which is not going to work.
+
+\end

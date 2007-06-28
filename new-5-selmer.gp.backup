@@ -1,0 +1,15 @@
+\r helper.gp.run
+
+a=1;
+b=2;
+lim=500;
+j_got=0;
+j_sofar=vector(0);
+j_sofar_len=vector(0);
+j_sofar_bounds=vector(0);
+
+bound=3;
+lijst=j_setup(a,b,bound,lim);
+j_sofar=concat(j_sofar,[lijst]);
+j_sofar_len=concat(j_sofar_len,[matsize(lijst)[2]]);
+j_sofar_bounds==concat(j_sofar_bounds,[bound]);

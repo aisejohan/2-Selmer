@@ -1,0 +1,3 @@
+f = x*(x-a)*(x+b)
+phi = ((x^2+a*b)^2)/(4*x*(x-a)*(x+b))
+subst(phi,x,phi)

@@ -1211,7 +1211,7 @@ j_do_it_once(j_a,j_b,j_bound,l_primes,l_prev)=
 			);
 			if(j_ok,
 				j_rank=j_compute(j_a,j_b,j_tmp*j_prime);
-				if(j_rank <= j_bound,
+				if(j_rank >= j_bound,
 					len++;
 					l=concat(l,[j_tmp*j_prime])
 				)
@@ -1254,7 +1254,7 @@ j_do_it_once_lijst(j_a,j_b,j_bound,l_primes,l_prev,lijst)=
 			);
 			if(j_ok,
 				j_rank=j_compute_lijst(j_a,j_b,j_tmp*j_prime,lijst);
-				if(j_rank <= j_bound,
+				if(j_rank >= j_bound,
 					len++;
 					l=concat(l,[j_tmp*j_prime])
 				)

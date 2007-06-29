@@ -825,25 +825,9 @@ for(i=3,s,
 return(UIT);
 }
 
-/* indices is an ordered list of indices of primes occuring in d 
-this includes 1 if d is negative, 2 if 2 divides d, 3 if 3 divides d
-4 if 5 divides d, 5 if 7 divides d, etc. So 
-	indices=[1,2,3]	corresponds to	d=-6
-	indices=[1,2]	corresponds to	d=-2
-	indices=[5,7]	corresponds to	d=7*13	
-*/
-global_linear_conditions_lijst(a,b,indices,lijst)=
+global_linear_conditions_lijst(a,b,d,lijst)=
 {
-local(d,s,l,N,T,UIT,i,j,e,p,t,tmp,powern,powerp,power5);
-d=1;
-s=matsize(indices)[2];
-for(i=1,s,
-	if(indices[i] == 1,
-		d = -d
-	,
-		d = d*prime(indices[i]-1)
-	)
-);
+local(s,l,N,T,UIT,i,j,e,p,t,tmp,powern,powerp,power5);
 N=-abs(a*b*(a+b)*d);
 l=factor(N);
 s=matsize(l)[1];
@@ -871,6 +855,7 @@ for(j=1,s,
 powerp=valuation(d,2);
 powern=1-issquare(Mod(2^(-powerp)*d,4));
 power5=1-issquare(Mod(2^(-powerp)*(-1)^powern*d,8));
+powerp=lift(Mod(powerp,2));
 T=lijst[2][1+powern+2*power5+4*powerp];
 for(j=1,s,
 	e=valuation(l[j,1],2);
@@ -903,6 +888,7 @@ for(i=3,s,
 	);
 	powerp=valuation(d,p);
 	powern=1-issquare(Mod(p^(-powerp)*d,p));
+	powerp=lift(Mod(powerp,2));
 	T=lijst[j+1][1+powern+2*powerp];
 	for(j=1,s,
 		e=valuation(l[j,1],p);
@@ -923,30 +909,27 @@ return(UIT);
 
 test_global_lin_con_twice(aa,bb)=
 {
-local(a,b,d,l,maxpi,indices,lijst);
+local(d,u1,u2,maxpi,lijst);
 maxpi=50;
 maxpi=max(maxpi,primepi(abs(aa)));
 maxpi=max(maxpi,primepi(abs(bb)));
 maxpi=max(maxpi,primepi(abs(aa+bb)));
 lijst=j_init(aa,bb,maxpi+1);
-for(a=1,40,
-	for(b=a+1,40,
-		d=1;
-		indices=[a,b];
-		if(a==1,
-			d=-d
-		,
-			d=d*prime(a-1)
-		);
-		d=d*prime(b-1);
-		if(
-		global_linear_conditions(aa,bb,d)==
-		global_linear_conditions_lijst(aa,bb,indices,lijst),
-			print("YES YES YES YES")
-		,
-			print("NO NO NO NO")
-		)
-	)
+print(maxpi+1);
+d=-prime(45);
+while(d <= prime(45),
+	print(d);
+	if(d==0,
+		d++
+	);
+	u1=global_linear_conditions(aa,bb,d);
+	u2=global_linear_conditions_lijst(aa,bb,d,lijst);
+	if(u1==u2,
+		print("YES YES YES YES")
+	,
+		print("NO NO NO NO")
+	);
+	d++
 );
 return(0)
 }
@@ -1018,25 +1001,9 @@ for(i=3,s,
 return(matsize(UIT)[1]-matrank(UIT))
 }
 
-/* indices is an ordered list of indices of primes occuring in d 
-this includes 1 if d is negative, 2 if 2 divides d, 3 if 3 divides d
-4 if 5 divides d, 5 if 7 divides d, etc. So 
-	indices=[1,2,3]	corresponds to	d=-6
-	indices=[1,2]	corresponds to	d=-2
-	indices=[5,7]	corresponds to	d=7*13	
-*/
-rank_2_selmer_group_lijst(a,b,indices,lijst)=
+rank_2_selmer_group_lijst(a,b,d,lijst)=
 {
-local(d,s,l,N,T,UIT,i,j,e,p,t,tmp,powern,powerp,power5);
-d=1;
-s=matsize(indices)[2];
-for(i=1,s,
-	if(indices[i] == 1,
-		d = -d
-	,
-		d = d*prime(indices[i]-1)
-	)
-);
+local(s,l,N,T,UIT,i,j,e,p,t,tmp,powern,powerp,power5);
 N=-abs(a*b*(a+b)*d);
 l=factor(N);
 s=matsize(l)[1];
@@ -1064,6 +1031,7 @@ for(j=1,s,
 powerp=valuation(d,2);
 powern=1-issquare(Mod(2^(-powerp)*d,4));
 power5=1-issquare(Mod(2^(-powerp)*(-1)^powern*d,8));
+powerp=lift(Mod(powerp,2));
 T=lijst[2][1+powern+2*power5+4*powerp];
 for(j=1,s,
 	e=valuation(l[j,1],2);
@@ -1090,6 +1058,7 @@ for(i=3,s,
 	j=primepi(p);
 	powerp=valuation(d,p);
 	powern=1-issquare(Mod(p^(-powerp)*d,p));
+	powerp=lift(Mod(powerp,2));
 	T=lijst[j+1][1+powern+2*powerp];
 	for(j=1,s,
 		e=valuation(l[j,1],p);
@@ -1120,15 +1089,14 @@ j_compute(j_a,j_b,j_d)=
 	return(j_return)
 }
 
-j_compute_lijst(j_a,j_b,j_indices,lijst)=
+j_compute_lijst(j_a,j_b,j_d,lijst)=
 {
 	local(j_return);
-	j_return=rank_2_selmer_group_lijst(j_a,j_b,j_indices,lijst);
+	j_return=rank_2_selmer_group_lijst(j_a,j_b,j_d,lijst);
 	if(j_return > 10,
 		print("Here the 2-Selmer rank is: ",j_return);
 		write("BIGSELMER",
-		"a=",j_a,"; b=",j_b,"; indices="j_indices,
-		"; selmer=",j_return,";")
+		"a=",j_a,"; b=",j_b,"; d="j_d,"; selmer=",j_return,";")
 	);
 	return(j_return)
 }

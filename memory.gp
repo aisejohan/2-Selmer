@@ -1126,16 +1126,14 @@ j_setup(j_a,j_b,j_bound,j_lim)=
 	l=[];
 	len=0;
 	j_rank=j_compute(j_a,j_b,-1);
-	if(j_rank <= j_bound,
-		print("For -1 we get: ",j_rank);
+	if(j_rank >= j_bound,
 		len++;
 		l=concat(l,[-1])
 	);
 	j_prime=2;
 	while(j_prime < j_lim,
 		j_rank=j_compute(j_a,j_b,j_prime);
-		if(j_rank <= j_bound,
-			print(j_rank);
+		if(j_rank >= j_bound,
 			len++;
 			l=concat(l,[j_prime])
 		);

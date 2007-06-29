@@ -1,0 +1,5 @@
+*.swp
+*.gp.c
+*.gp.o
+*.gp.run
+*.gp.so

@@ -752,7 +752,7 @@ if(j_lim<3,
 lijst=vector(j_lim+1);
 lijst[1]=set_of_linear_conditions_infty(a,b);
 lijst[2]=set_of_linear_conditions_2(a,b);
-for(i=3,j_lim,
+for(i=3,j_lim+1,
 	lijst[i]=set_of_linear_conditions(a,b,prime(i-1))
 );
 return(lijst)
@@ -1101,7 +1101,6 @@ j_compute_lijst(j_a,j_b,j_d,lijst)=
 	return(j_return)
 }
 
-
 j_setup(j_a,j_b,j_bound,j_lim)=
 {
 	local(l,len,j_prime,j_rank);
@@ -1120,6 +1119,29 @@ j_setup(j_a,j_b,j_bound,j_lim)=
 			l=concat(l,[j_prime])
 		);
 		j_prime=nextprime(j_prime+1)
+	);
+	return(l)
+}
+
+j_setup_lijst(j_a,j_b,j_bound,j_lim,lijst)=
+{
+	local(l,len,j_index,j_prime,j_rank);
+	l=[];
+	len=0;
+	j_rank=j_compute_lijst(j_a,j_b,-1,lijst);
+	if(j_rank >= j_bound,
+		len++;
+		l=concat(l,[-1])
+	);
+	j_index=1;
+	while(j_index <= j_lim,
+		j_prime=prime(j_index);
+		j_rank=j_compute_lijst(j_a,j_b,j_prime,lijst);
+		if(j_rank >= j_bound,
+			len++;
+			l=concat(l,[j_prime])
+		);
+		j_index++
 	);
 	return(l)
 }
@@ -1201,6 +1223,49 @@ j_do_it_once(j_a,j_b,j_bound,l_primes,l_prev)=
 	return(l)
 }
 
+j_do_it_once_lijst(j_a,j_b,j_bound,l_primes,l_prev,lijst)=
+{
+	local(l,len,len_prev,len_primes,j_tmp,j_factors,j_j,j_prime,
+		j_ok,j_n,j_spot,j_rank,j_got);
+	l=[];
+	len=0;
+	len_primes=matsize(l_primes)[2];
+	len_prev=matsize(l_prev)[2];
+	if(len_prev == 0 || len_primes == 0,
+		return(l)
+	,
+		j_got=matsize(factor(l_prev[1]))[1]
+	);
+	for(j_i=1,len_prev,
+		print("Doing ",j_i," out of ",len_prev);
+		j_tmp=l_prev[j_i];
+		j_factors=factor(j_tmp)[,1];
+		j_j=find_spot(l_primes,j_factors[j_got]+1);
+		while(j_j <= len_primes,
+			j_prime=l_primes[j_j];
+			j_ok=1;
+			for(j_k=1,j_got,
+				j_n=j_tmp*j_prime/j_factors[j_k];
+				j_spot=find_spot(l_prev,j_n);
+				if(j_spot > len_prev || j_n != l_prev[j_spot],
+					j_ok=0;
+					j_k=j_got;
+				)
+			);
+			if(j_ok,
+				j_rank=j_compute_lijst(j_a,j_b,j_tmp*j_prime,lijst);
+				if(j_rank <= j_bound,
+					len++;
+					l=concat(l,[j_tmp*j_prime])
+				)
+			);
+			j_j++
+		)
+	);
+	l=vecsort(l);
+	return(l)
+}
+
 help()=
 {
 print("
@@ -1220,14 +1285,25 @@ test_linear_subspace(a,b,d,p)
 test_linear_subspace_2(a,b,d)
 test_linear_infty(a,b,d)
 linear_conditions(a,b,d,p)
+set_of_linear_conditions(a,b,p)
 linear_conditions_2(a,b,d)
+set_of_linear_conditions_2(a,b)
 linear_conditions_infty(a,b,d)
+set_of_linear_conditions_infty(a,b)
+j_init(a,b,j_lim)
 global_linear_conditions(a,b,d)
+global_linear_conditions_lijst(a,b,d,lijst)
+test_global_lin_con_twice(aa,bb)
 rank_2_selmer_group(a,b,d)
+rank_2_selmer_group_lijst(a,b,d,lijst)
 j_compute(j_a,j_b,j_d)
+j_compute_lijst(j_a,j_b,j_d,lijst)
 j_setup(j_a,j_b,j_bound,j_lim)
+j_setup_lijst(j_a,j_b,j_bound,j_lim,lijst)
 find_spot(j_lijst,j_target)
 j_do_it_once(j_a,j_b,j_bound,l_primes,l_prev)
+j_do_it_once_lijst(j_a,j_b,j_bound,l_primes,l_prev,lijst)
 help()");
 return(0)
 }
+

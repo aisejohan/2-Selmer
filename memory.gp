@@ -1018,6 +1018,96 @@ for(i=3,s,
 return(matsize(UIT)[1]-matrank(UIT))
 }
 
+/* indices is an ordered list of indices of primes occuring in d 
+this includes 1 if d is negative, 2 if 2 divides d, 3 if 3 divides d
+4 if 5 divides d, 5 if 7 divides d, etc. So 
+	indices=[1,2,3]	corresponds to	d=-6
+	indices=[1,2]	corresponds to	d=-2
+	indices=[5,7]	corresponds to	d=7*13	
+*/
+rank_2_selmer_group_lijst(a,b,indices,lijst)=
+{
+local(d,s,l,N,T,UIT,i,j,e,p,t,tmp,powern,powerp,power5);
+d=1;
+s=matsize(indices)[2];
+for(i=1,s,
+	if(indices[i] == 1,
+		d = -d
+	,
+		d = d*prime(indices[i]-1)
+	)
+);
+N=-abs(a*b*(a+b)*d);
+l=factor(N);
+s=matsize(l)[1];
+UIT=matrix(2*s,2*s);
+/* Real numbers. */
+if(sign(d) == 1,
+	T=lijst[1][1]
+,
+	T=lijst[1][2]
+);
+for(j=1,s,
+	if(sign(l[j,1])==1,
+		powern=Mod(0,2)
+	,
+		powern=Mod(1,2)
+	);
+	t=[powern,Mod(0,2)]~;
+	tmp=T*t;
+	UIT[j,1]=tmp[1];
+	t=[Mod(0,2),powern]~;
+	tmp=T*t;
+	UIT[s+j,1]=tmp[1]
+);
+/* 2-adic */
+powerp=valuation(d,2);
+powern=1-issquare(Mod(2^(-powerp)*d,4));
+power5=1-issquare(Mod(2^(-powerp)*(-1)^powern*d,8));
+T=lijst[2][1+powern+2*power5+4*powerp];
+for(j=1,s,
+	e=valuation(l[j,1],2);
+	powerp=e;
+	powern=1-issquare(Mod(2^(-e)*l[j,1],4));
+	power5=1-issquare(Mod(2^(-e)*(-1)^(powern)*l[j,1],8));
+	powerp=Mod(powerp,2);
+	powern=Mod(powern,2);
+	power5=Mod(power5,2);
+	t=[powern,power5,powerp,Mod(0,2),Mod(0,2),Mod(0,2)]~;
+	tmp=T*t;
+	UIT[j,2]=tmp[1];
+	UIT[j,3]=tmp[2];
+	UIT[j,4]=tmp[3];
+	t=[Mod(0,2),Mod(0,2),Mod(0,2),powern,power5,powerp]~;
+	tmp=T*t;
+	UIT[s+j,2]=tmp[1];
+	UIT[s+j,3]=tmp[2];
+	UIT[s+j,4]=tmp[3]
+);
+/* Odd primes. */
+for(i=3,s,
+	p=l[i,1];
+	j=primepi(p);
+	powerp=valuation(d,p);
+	powern=1-issquare(Mod(p^(-powerp)*d,p));
+	T=lijst[j+1][1+powern+2*powerp];
+	for(j=1,s,
+		e=valuation(l[j,1],p);
+		powerp=Mod(e,2);
+		powern=Mod(1-issquare(Mod(p^(-e)*l[j,1],p)),2);
+		t=[powern,powerp,Mod(0,2),Mod(0,2)]~;
+		tmp=T*t;
+		UIT[j,2*i-1]=tmp[1];
+		UIT[j,2*i]=tmp[2];
+		t=[Mod(0,2),Mod(0,2),powern,powerp]~;
+		tmp=T*t;
+		UIT[s+j,2*i-1]=tmp[1];
+		UIT[s+j,2*i]=tmp[2];
+	);
+);
+return(matsize(UIT)[1]-matrank(UIT))
+}
+
 j_compute(j_a,j_b,j_d)=
 {
 	local(j_return);

@@ -923,7 +923,7 @@ return(UIT);
 
 test_global_lin_con_twice(aa,bb)=
 {
-local(a,b,d,l,maxpip,indices,lijst);
+local(a,b,d,l,maxpi,indices,lijst);
 maxpi=50;
 maxpi=max(maxpi,primepi(abs(aa)));
 maxpi=max(maxpi,primepi(abs(bb)));
@@ -1119,6 +1119,20 @@ j_compute(j_a,j_b,j_d)=
 	);
 	return(j_return)
 }
+
+j_compute_lijst(j_a,j_b,j_indices,lijst)=
+{
+	local(j_return);
+	j_return=rank_2_selmer_group_lijst(j_a,j_b,j_indices,lijst);
+	if(j_return > 10,
+		print("Here the 2-Selmer rank is: ",j_return);
+		write("BIGSELMER",
+		"a=",j_a,"; b=",j_b,"; indices="j_indices,
+		"; selmer=",j_return,";")
+	);
+	return(j_return)
+}
+
 
 j_setup(j_a,j_b,j_bound,j_lim)=
 {

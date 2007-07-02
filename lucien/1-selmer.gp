@@ -228,3 +228,41 @@ The function field of this rational curve is the field
 	K(y2/y1)[y3/y1]/( u*b*(y2/y1)^2 + v*a*(y3/y1)^2 - (a+b)/(u*v) ).
 
 */
+
+/*
+Solving the equations
+
+	y1^2 = u*v*d*z
+	y2^2 = u^(-1)*d*(z-a)
+	y3^2 = v^(-1)*d*(z+b)
+
+is equivalent to solving the system of homogeneous equations
+
+	Y1^2 = u*v*d*Z
+	Y2^2 = u^(-1)*d*(Z-a*W)
+	Y3^2 = v^(-1)*d*(Z+b*W)
+	Y4^2 = W
+
+and this in turn is equivalent to solving the pair of 
+quadratic equations
+
+	u*Y2^2 - v*Y3^2 = (-a*d - b*d)*W = -(a+b)*d*Y4^2
+	b*u*Y2^2 + a*v*Y3^2 = (b*d + a*d)*Z = (a+b)*u^(-1)*v^(-1)*Y1^2
+
+or
+
+	                          u*Y2^2 - v*Y3^2 + (a+b)*d*Y4^2 = 0
+	-(a+b)*(uv)^(-1)*Y1^2 + b*u*Y2^2 + a*v*Y3^2  = 0
+
+Given a solution (Y1,Y2,Y3,Y4) we get:
+
+	W  = Y4^2
+	Z  = Y1^2/(u*v*d)
+	y1 = Y1/Y4
+	y2 = Y2/Y4
+	y3 = Y3/Y4
+	z  = Z/W
+	x  = z
+	y  = y1*y2*y3/d^2
+
+*/

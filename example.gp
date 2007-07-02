@@ -188,17 +188,34 @@ print("The rank of the 2-selmer group is: ",rank);
 l=find_l(aa,bb,dd);
 trivials=find_triv(aa,bb,dd);
 tmp=vector(rank,i,[0,1]);
-forvec(X=tmp,\
 {
+forvec(X=tmp,
 	test=lift(Mod(X*KERN,2));
+	uv=uv_vector(aa,bb,dd,test);
+	print("Here uv=",uv);
 	if( test == 0 || 
 	test == trivials[1] || 
 	test == trivials[2] ||
 	test == trivials[3],,
-		uv=uv_vector(aa,bb,dd,test);
 		GG=quadrics(aa,bb,dd,uv);
 		if(try_it(aa,bb,dd,uv,GG,50),
 			print("Does not work when X=",X)
 		)
 	)
-})
+)
+}
+
+/* Test case:
+a=1
+b=2
+d=115
+u=-15
+v=345
+A solution is:
+Y1=91425
+Y2=483
+Y3=79
+Y4=128
+After simplification we have
+GG=[[0, 0, 0, 0; 0, -1, 0, 0; 0, 0, -23, 0; 0, 0, 0, 23], [1, 0, 0, 0; 0, -51750, 0, 0; 0, 0, 595125, 0; 0, 0, 0, 0]];
+*/
